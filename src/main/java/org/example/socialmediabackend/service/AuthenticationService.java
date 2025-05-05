@@ -36,12 +36,10 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
-        // Check if email already exists
         if (userRepository.findByEmail(input.getEmail()).isPresent()) {
             throw new RuntimeException("Email is already in use");
         }
 
-        // Check if username already exists
         if (userRepository.findByUsername(input.getUsername()).isPresent()) {
             throw new RuntimeException("Username is already in use");
         }
