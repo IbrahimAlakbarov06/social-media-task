@@ -36,7 +36,23 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
-        User user = new User(input.getUsername(), input.getEmail(), passwordEncoder.encode(input.getPassword()));
+        // Check if email already exists
+        if (userRepository.findByEmail(input.getEmail()).isPresent()) {
+            throw new RuntimeException("Email is already in use");
+        }
+
+        // Check if username already exists
+        if (userRepository.findByUsername(input.getUsername()).isPresent()) {
+            throw new RuntimeException("Username is already in use");
+        }
+
+        User user = new User(
+                input.getUsername(),
+                input.getEmail(),
+                passwordEncoder.encode(input.getPassword()),
+                input.getName(),
+                input.getSurname()
+        );
         user.setVerificationCode(generateVerificationCode());
         user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
         user.setEnabled(false);

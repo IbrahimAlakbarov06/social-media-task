@@ -19,4 +19,10 @@ public class RegisterUserDto {
     @NotBlank
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
+
+    @NotBlank(message = "Name is required")
+    private String name;
+
+    @NotBlank(message = "Surname is required")
+    private String surname;
 }
