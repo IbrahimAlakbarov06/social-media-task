@@ -10,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -60,10 +57,15 @@ public class User implements UserDetails {
     @Column(name = "reset_code")
     private String resetCode;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostReaction> postReactions = new HashSet<>();
+
     @Column(name = "reset_code_expires_at")
     private LocalDateTime resetCodeExpiresAt;
 
-    // Follow relationships
     @ManyToMany
     @JoinTable(
             name = "user_follows",
